@@ -1,0 +1,1 @@
+ku_kod;ku_nazev;celkovy_pocet_parcel;celkova_vymera;orna_puda_pp;orna_puda_v;chmelnice_pp;chmelnice_v;vinice_pp;vinice_v;zahrada_pp;zahrada_v;ovocny_sad_pp;ovocny_sad_v;ttp_pp;ttp_v;lesni_pozemek_pp;lesni_pozemek_v;vodni_plocha_pp;vodni_plocha_v;zastavena_plocha_pp;zastavena_plocha_v;ostatni_plocha_pp;ostatni_plocha_v
