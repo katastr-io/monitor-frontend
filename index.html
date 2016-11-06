@@ -6,7 +6,10 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script defer src="js/index.js"></script>
     <script defer src="js/data.js"></script>
+    <script defer src="js/dashboard.js"></script>
     <script defer src="js/search.js"></script>
+    <script defer src="js/info.js"></script>
+    <script defer src="js/mapper.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,600" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/index.css">
@@ -18,7 +21,21 @@
             <input type="text" id="cadastre-area" placeholder="jméno nebo kód" autofocus>
         </div>
     </section>
-    <div class="chart">
-    </div>
+    <section class="info">
+        <p>
+            <small></small>
+        </p>
+    </section>
+    <section class="chart">
+        <section class="area">
+            <h2>výměra [%]</h2>
+        </section>
+        <section class="parcel">
+            <h2>parcely [%]</h2>
+        </section>
+        <section class="parcel-avg-area">
+            <h2>průměrná výměra parcely [ha]</h2>
+        </section>
+    </section>
 </body>
 </html>

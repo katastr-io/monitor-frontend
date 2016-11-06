@@ -1,7 +1,7 @@
 Monitor.Search = {
+    _results: [],
     autocomplete: function() {
         const input = document.querySelector("#cadastre-area");
-        let results = [];
 
         input.addEventListener("keyup", this._filter.bind(input, this));
     },
@@ -14,22 +14,22 @@ Monitor.Search = {
             return;
         }
 
-        results = cadastreAreas.filter((elm) => {
-            for (prop in elm) {
+        self._results = Monitor.Data.get().filter((elm) => {
+            for (prop of ["ku_nazev", "ku_kod"]) {
                 if (elm[prop].toString().toLowerCase().startsWith(value)) {
                     return elm;
                 }
             }
         });
 
-        if (results) {
-            self._addList(results);
+        if (self._results) {
+            self._addList();
         } else {
             self._removeList();
         }
     },
-    _addList: function(elm) {
-        document.querySelector(".cadastre-search").appendChild(this._createList(results));
+    _addList: function() {
+        document.querySelector(".cadastre-search").appendChild(this._createList(this._results));
     },
     _removeList: () => {
         if (!document.querySelector(".cadastre-area-autocomplete")) {
@@ -41,23 +41,35 @@ Monitor.Search = {
     },
     _createList: function (arr) {
         let list = document.querySelector(".cadastre-area-autocomplete") || document.createElement("ul");
-        let listItem, listItemLink;
+        let listItem;
+        let self = this;
+
         list.className = "cadastre-area-autocomplete";
         list.innerHTML = ""; // reset existing list
 
         for (let item of arr) {
             listItem = document.createElement("li");
             listItem.innerHTML = `${item.ku_nazev} / ${item.ku_kod}`;
-            listItem.addEventListener("click", (e) => {
-                this._selectCadastre(item);
+            listItem.addEventListener("click", function(e) {
+                self._selectCadastre(item);
             });
+            list.appendChild(listItem);
+        }
+
+        if (arr.length === 0) {
+            listItem = document.createElement("li");
+            listItem.innerHTML = 'Nebyly nalezeny žádné záznamy.';
             list.appendChild(listItem);
         }
 
         return list;
     },
     _selectCadastre: function(d) {
-        Monitor.Data.setCurrent(d);
+        const input = document.querySelector("#cadastre-area");
+        input.value = d.ku_nazev;
+        this._removeList();
+
+        return Monitor.Data.setCurrent(d);
     }
 }
 

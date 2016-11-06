@@ -11,7 +11,7 @@ body {
 
 section.header {
   align-items: baseline;
-  border-bottom: 1px solid #1F3C6F;
+  border-bottom: 2px solid #1F3C6F;
   flex-wrap: wrap;
   display: flex;
   position: relative;
@@ -39,7 +39,7 @@ section.header {
   .header input:active,
   .header input:focus {
     border: none;
-    border-bottom: 2px solid #1F3C6F;
+    border-bottom: 1px solid #1F3C6F;
     font-family: inherit;
     margin-top: 2px;
     outline: none;
@@ -53,6 +53,10 @@ section.header {
     text-transform: uppercase;
 }
 
+h2 {
+  font-weight: 300
+}
+
 ul.cadastre-area-autocomplete {
   border-bottom: 1px solid #1F3C6F;
   list-style: none;
@@ -60,21 +64,32 @@ ul.cadastre-area-autocomplete {
 }
 
   ul.cadastre-area-autocomplete li {
+    cursor: pointer;
     padding-bottom: 8px;
     padding-top: 8px;
   }
 
+.chart {
+  display: flex;
+}
+
+.chart section {
+  flex: 1 0 auto; /* 33 % */
+}
+
 .chart div {
-      font: 10px sans-serif;
-      background-color: steelblue;
-      text-align: right;
-      padding: 3px;
-      margin: 1px;
-      color: white;
+    background-color: steelblue;
+    color: #1F3C6F;
+    font-size: .8rem;
+    font-weight: 400;
+    margin: 3px;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    text-align: right;
+    white-space: nowrap;
     }
 
-
-.header-pic-2 h1{
-    font-size: 80px;
-    font-weight: 400;
+svg {
+  width: 500px;
+  height: 500px;
 }
