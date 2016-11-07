@@ -1,16 +1,16 @@
 Monitor.Mapper = {};
 
 Monitor.Mapper._colors = {
-    orna_puda: "#FBB829",
-    chmelnice: "black",
+    orna_puda: "#543511",
+    chmelnice: "#CFF09E",
     vinice: "#AB565F",
-    zahrada: "black",
-    ovocny_sad: "black",
+    zahrada: "#FF9900",
+    ovocny_sad: "#F02311",
     ttp: "#7FAF1B",
     lesni_pozemek: "#003000",
     vodni_plocha: "#21AABD",
-    zastavena_plocha: "#948C75",
-    ostatni_plocha: "black"
+    zastavena_plocha: "#7F828C",
+    ostatni_plocha: "#4E5054"
 };
 
 Monitor.Mapper._labels = {

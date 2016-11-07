@@ -90,6 +90,13 @@ ul.cadastre-area-autocomplete {
     }
 
 svg {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  /*height: 500px;*/
 }
+
+  svg text {
+    fill: #1F3C6F;
+    font-family: 'Roboto', sans-serif;
+    font-size: .8rem;
+    font-weight: 300;
+  }
