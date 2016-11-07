@@ -8,6 +8,7 @@ Monitor.Dashboard = {
     _redraw: function() {
         this._redrawSvgChart("areaRatio", ".chart .area");
         this._redrawSvgChart("parcelRatio", ".chart .parcel");
+        this._redrawSvgChart("parcelAvgArea", ".chart .parcel-avg-area");
     },
     _redrawSvgChart: function(what, where) {
         const data = this._getValues(what);
@@ -16,13 +17,17 @@ Monitor.Dashboard = {
         const margin = 40;
         let labelWidth = 0;
         let scale = d3.scaleLinear()
-            .domain([0, 100])
-            .range([0, 400 - margin*2 - labelWidth]);
+            // ugly hack
+            .domain([0, what.indexOf("Avg") === -1 ? 100 : d3.max(data, (d) => {
+                return d[1];
+            })])
+            .range([0, 400 - margin*2 - labelWidth]); // hard-coded width
 
         d3.select(where).selectAll("svg").remove(); // ugly hack? see https://bl.ocks.org/mbostock/3808218
 
         const svg = d3.select(where)
-            .append("svg");
+            .append("svg")
+            .style("height", data.length * (barHeight + (barPadding / 2)));
 
         const bar = svg.selectAll("g")
             .data(data)
@@ -81,6 +86,8 @@ Monitor.Dashboard = {
             type = "v_r";
         } else if (type === "parcelRatio") {
             type = "pp_r";
+        } else if (type === "parcelAvgArea") {
+            type = "v_avg";
         }
 
         let c = Monitor.Data.getCurrent();
