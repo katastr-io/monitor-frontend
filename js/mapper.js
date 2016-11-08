@@ -41,3 +41,13 @@ Monitor.Mapper.getColor = function(str) {
         }
     }
 };
+
+Monitor.Mapper.getLabels = function() {
+    let result = [];
+
+    for (let label in this._labels) {
+        result.push(this._labels[label]);
+    }
+
+    return result;
+}

@@ -17,7 +17,11 @@ function addStats(row) {
     }
 
     function _avg(d) {
-        return (parseFloat(row[d] / row[d.replace("_v", "_pp")]) / 10000).toFixed(4);
+        let result = parseFloat(row[d] / row[d.replace("_v", "_pp")]) / 10000;
+        if (isNaN(result)) {
+            result = 0;
+        }
+        return result.toFixed(4);
     }
 
     function _ratio(d) {
@@ -25,7 +29,7 @@ function addStats(row) {
             ? parseInt(row[d]) / parseInt(row.celkova_vymera)
             : parseInt(row[d]) / parseInt(row.celkovy_pocet_parcel);
 
-        return (ratio * 100).toFixed(2);
+        return (isNaN(ratio) ? 0 : ratio * 100).toFixed(2);
     }
 
     return row;

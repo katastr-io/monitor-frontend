@@ -91,8 +91,17 @@ ul.cadastre-area-autocomplete {
 
 svg {
   width: 400px;
-  /*height: 500px;*/
 }
+
+.legend svg {
+  border-right: 1px solid #1F3C6F;
+  margin-right: 5px;
+  width: 120px;
+}
+
+  .legend h2 {
+    visibility: hidden;
+  }
 
   svg text {
     fill: #1F3C6F;

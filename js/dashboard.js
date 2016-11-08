@@ -6,9 +6,40 @@ Monitor.Dashboard = {
         document.querySelector(".chart").addEventListener("datachange", this._redraw.bind(this));
     },
     _redraw: function() {
+        this._drawLegend();
         this._redrawSvgChart("areaRatio", ".chart .area");
         this._redrawSvgChart("parcelRatio", ".chart .parcel");
         this._redrawSvgChart("parcelAvgArea", ".chart .parcel-avg-area");
+    },
+    _drawLegend: function() {
+        const data = Monitor.Mapper.getLabels();
+        const barHeight = 20;
+        const barPadding = 5;
+        const margin = 0;
+
+        d3.select(".legend").selectAll("svg").remove();
+
+        const svg = d3.select(".legend")
+            .append("svg")
+            .style("height", data.length * (barHeight + (barPadding / 2)));
+
+        const label = svg.selectAll("g")
+            .data(data)
+            .enter()
+            .append("g");
+
+        label.attr("class", "label")
+            .attr("cx", 0)
+            .attr("transform", function(d, i) {
+                return "translate(" + margin + "," + (i * (barHeight + barPadding) + barPadding) + ")";
+            });
+
+        label.append("text")
+            .attr("class", "value")
+            .attr("y", barHeight / 2)
+            .attr("dy", ".35em") //vertical align middle
+            .attr("text-anchor", "start")
+            .text((d) => {return d;});
     },
     _redrawSvgChart: function(what, where) {
         const data = this._getValues(what);
@@ -41,7 +72,7 @@ Monitor.Dashboard = {
             });
 
         bar.append("text")
-            .attr("class", "label")
+            .attr("class", "value")
             .attr("y", barHeight / 2)
             .attr("dy", ".35em") //vertical align middle
             .attr("text-anchor", "end")
@@ -61,20 +92,17 @@ Monitor.Dashboard = {
                     return scale(d[1]);
                 });
 
-        bar.append("text")
-                .attr("class", "value")
+        /*bar.append("text")
+                .attr("class", "label")
                 .attr("y", barHeight / 2)
-                .attr("dx", function(d) {
-                    return scale(d3.max(data, (d) => {
-                        return parseFloat(d[1]) + labelWidth + margin / 2;
-                    }));
-                }) //margin right
+                .attr("dx", 30)
+                 //margin right
                 .attr("dy", ".35em") //vertical align middle
-                .attr("text-anchor", "end")
+                .attr("text-anchor", "start")
                 .text(function(d){
                     return `${Monitor.Mapper.getLabel(d[0])}`;
                 })
-                .attr("x", 0);
+                .attr("x", 0);*/
     },
     /**
      * Gets values for each type of chart.
@@ -94,9 +122,8 @@ Monitor.Dashboard = {
         let arr = Object.entries(c);
 
         arr = arr.filter((elm) => {
-            return elm[0].indexOf(type) > -1 && parseFloat(elm[1]) > 0;
+            return elm[0].indexOf(type) > -1;
         });
-
 
         return arr;
     }
