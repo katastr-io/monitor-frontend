@@ -21,7 +21,7 @@ Monitor.Dashboard = {
 
         const svg = d3.select(".legend")
             .append("svg")
-            .style("height", data.length * (barHeight + (barPadding / 2)));
+            .style("height", (data.length + 1) * (barHeight + (barPadding / 2)));
 
         const label = svg.selectAll("g")
             .data(data)
@@ -47,6 +47,9 @@ Monitor.Dashboard = {
         const barPadding = 5;
         const margin = 40;
         let labelWidth = 0;
+
+        console.log(what, where);
+
         let scale = d3.scaleLinear()
             // ugly hack
             .domain([0, what.indexOf("Avg") === -1 ? 100 : d3.max(data, (d) => {
@@ -58,7 +61,7 @@ Monitor.Dashboard = {
 
         const svg = d3.select(where)
             .append("svg")
-            .style("height", data.length * (barHeight + (barPadding / 2)));
+            .style("height", (data.length + 1) * (barHeight + (barPadding / 2)));
 
         const bar = svg.selectAll("g")
             .data(data)
@@ -91,18 +94,6 @@ Monitor.Dashboard = {
                 .attr("width", function(d){
                     return scale(d[1]);
                 });
-
-        /*bar.append("text")
-                .attr("class", "label")
-                .attr("y", barHeight / 2)
-                .attr("dx", 30)
-                 //margin right
-                .attr("dy", ".35em") //vertical align middle
-                .attr("text-anchor", "start")
-                .text(function(d){
-                    return `${Monitor.Mapper.getLabel(d[0])}`;
-                })
-                .attr("x", 0);*/
     },
     /**
      * Gets values for each type of chart.
@@ -124,6 +115,10 @@ Monitor.Dashboard = {
         arr = arr.filter((elm) => {
             return elm[0].indexOf(type) > -1;
         });
+
+        return arr.map((elm) => {
+            return [elm[0], elm[1][0]];
+        })
 
         return arr;
     }
