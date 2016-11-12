@@ -2,7 +2,7 @@ body {
     color: #1F3C6F;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    margin: 2rem;
+    margin: 2rem 1.5rem;
 }
 
 .line-break {
@@ -24,7 +24,9 @@ section.header {
   }
 
   .header h1,
-  .header input {
+  input,
+  select,
+  option {
     color: #1F3C6F;
     font-size: 2.6rem;
     font-weight: 300;
@@ -35,15 +37,16 @@ section.header {
     width: auto;
   }
 
-  .header input,
-  .header input:active,
-  .header input:focus {
+  input,
+  input:active,
+  input:focus,
+  select {
     border: none;
     border-bottom: 1px solid #1F3C6F;
     font-family: inherit;
     margin-top: 2px;
     outline: none;
-    width: 100%;
+    width: auto;
   }
 
 .header h1 {
@@ -53,8 +56,30 @@ section.header {
     text-transform: uppercase;
 }
 
+input {
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+.header form {
+    border-bottom: 1px solid #1F3C6F;
+
+}
+
+select {
+  background: white;
+  border: none;
+  margin-top: -2px !important;
+  padding-left: 1rem;
+}
+
+.header form:before {
+  content: "stav k";
+}
+
 h2 {
-  font-weight: 300
+  display: none;
+  font-weight: 300;
 }
 
 ul.cadastre-area-autocomplete {
@@ -73,8 +98,42 @@ ul.cadastre-area-autocomplete {
   display: flex;
 }
 
-.chart section {
+.chart section,
+.line-chart {
   flex: 1 0 auto; /* 33 % */
+}
+
+.line-chart,
+.line-chart section {
+  display: flex;
+}
+
+.line-chart {
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  visibility: hidden;
+}
+
+section.line-chart-header {
+  align-items: center;
+  border-top: 1px solid #C7C7CD;
+  justify-content: center;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  width: 100%;
+}
+
+.line-chart h2 {
+  width: 35%;
+}
+
+.line-chart form {
+  border-bottom: 1px solid #1F3C6F;
+}
+
+.line-chart select,
+.line-chart option {
+  font-size: 1.6rem;
 }
 
 .chart div {
@@ -89,9 +148,18 @@ ul.cadastre-area-autocomplete {
     white-space: nowrap;
     }
 
-svg {
+.chart svg {
   width: 400px;
 }
+
+
+.line-chart {
+  width: 100%;
+}
+
+  .line-chart svg {
+    padding-left: 60px;
+  }
 
 .legend svg {
   border-right: 1px solid #1F3C6F;
@@ -109,3 +177,50 @@ svg {
     font-size: .8rem;
     font-weight: 300;
   }
+
+path.domain,
+.tick line {
+  stroke: #1F3C6F;
+}
+
+circle,
+path {
+  cursor: pointer;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  -webkit-transform-origin: center;
+  -moz-transform-origin: center;
+  -ms-transform-origin: center;
+  -o-transform-origin: center;
+  transform-origin: center;
+  -webkit-transition: fill, -webkit-transform
+  -moz-transition: fill, -webkit-transform
+  -ms-transition: fill, -webkit-transform
+  -o-transition: fill, -webkit-transform
+  transition: fill, -webkit-transform
+  -webkit-transition-duration: .25;
+  -moz-transition-duration: .25;
+  -ms-transition-duration: .25;
+  -o-transition-duration: .25;
+  transition-duration: .25;
+}
+
+circle:hover{
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  transform: scale(1.5);
+  -webkit-transition: fill, -webkit-transform
+  -moz-transition: fill, -webkit-transform
+  -ms-transition: fill, -webkit-transform
+  -o-transition: fill, -webkit-transform
+  transition: fill, -webkit-transform
+  -moz-transition-duration: .25;
+  -ms-transition-duration: .25;
+  -o-transition-duration: .25;
+  transition-duration: .25;
+}
