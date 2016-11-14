@@ -39,6 +39,7 @@ Monitor.Dashboard.Chart = {
         const data = this._getLinechartValues(Monitor.Data.getCurrentLineType());
         const values = Object.values(data);
         const keys = Object.keys(data);
+        console.log(keys, values);
         const domain = [getDomain(values, "min"), getDomain(values, "max")];
         const height = 400;
         const width = document.body.clientWidth - 60;

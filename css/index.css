@@ -30,10 +30,10 @@ section.header {
     color: #1F3C6F;
     font-size: 2.6rem;
     font-weight: 300;
-    text-transform: uppercase;
   }
 
   .header h1 {
+    text-transform: uppercase;
     width: auto;
   }
 
@@ -133,7 +133,7 @@ section.line-chart-header {
 
 .line-chart select,
 .line-chart option {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 }
 
 .chart div {

@@ -21,7 +21,8 @@ Monitor.Mapper._colors = {
     lesni_pozemek: "#003000",
     vodni_plocha: "#21AABD",
     zastavena_plocha: "#7F828C",
-    ostatni_plocha: "#4E5054"
+    ostatni_plocha: "#4E5054",
+    zemedelska_puda: "#FABF23"
 };
 
 Monitor.Mapper._labels = {
@@ -39,18 +40,22 @@ Monitor.Mapper._labels = {
 
 Monitor.Mapper._dimensions = {
     "areaAbsolute": "_v",
+    "agrAreaAbsolute": "zemedelska_puda_v1",
     "areaRatio": "v_r",
     "parcelAbsolute": "_pp",
+    "agrParcelAbsolute": "zemedelska_puda_pp1",
     "parcelRatio": "pp_r",
     "parcelAvgArea": "v_avg"
 };
 
 Monitor.Mapper._lineTypes = {
     "areaAbsolute": "výměra [ha]",
+    "agrAreaAbsolute": "výměra zemědělské půdy [ha]",
     "areaRatio": "výměra [%]",
     "parcelAbsolute": "parcely",
+    "agrParcelAbsolute": "parcely zemědělské půdy",
     "parcelRatio": "parcely [%]",
-    "parcelAvgArea": "průměrná výměra parcely"
+    "parcelAvgArea": "průměrná výměra parcely [m2]"
 };
 
 Monitor.Mapper.getDimension = function(d) {
