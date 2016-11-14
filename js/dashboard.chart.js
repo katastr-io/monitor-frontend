@@ -200,7 +200,7 @@ Monitor.Dashboard.Chart = {
         let result = {};
 
         for (let prop in c) {
-            if (prop.indexOf(_type) === -1) {
+            if (!prop.endsWith(_type)) {
                 continue;
             }
 
@@ -237,7 +237,7 @@ Monitor.Dashboard.Chart = {
         }
 
         function byType(elm) {
-            return elm[0].indexOf(_type) > -1;
+            return elm[0].endsWith(_type);
         }
 
         function toObject(prev, cur) {

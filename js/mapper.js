@@ -38,13 +38,17 @@ Monitor.Mapper._labels = {
 };
 
 Monitor.Mapper._dimensions = {
+    "areaAbsolute": "_v",
     "areaRatio": "v_r",
+    "parcelAbsolute": "_pp",
     "parcelRatio": "pp_r",
     "parcelAvgArea": "v_avg"
 };
 
 Monitor.Mapper._lineTypes = {
+    "areaAbsolute": "výměra [ha]",
     "areaRatio": "výměra [%]",
+    "parcelAbsolute": "parcely",
     "parcelRatio": "parcely [%]",
     "parcelAvgArea": "průměrná výměra parcely"
 };
