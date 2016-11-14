@@ -21,7 +21,7 @@ WITH tables AS (
 
 SELECT 'DROP TABLE IF EXISTS data;
         CREATE TABLE data AS
-        SELECT d1.ku_kod, d2.ku_nazev,'
+        SELECT d1.ku_kod, d1.ku_nazev,'
 UNION ALL
 SELECT
     array_to_string(array_agg(r), ', ') r
@@ -45,4 +45,3 @@ UNION ALL
 SELECT 'FROM'
 UNION ALL
 SELECT tbl_join FROM tables;
-ROLLBACK;
