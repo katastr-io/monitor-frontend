@@ -39,6 +39,6 @@ sed -i 's/;*$//g' $CSVUTF8FILE && \
 sed -i '1d' $CSVUTF8FILE
 
 echo "importing to database"
-sed -e "s/\${DATE}/$FILE/g" data.sql | psql -qAt --no-psqlrc
+sed -e "s/\${DATE}/$FILE/g" extract.sql | psql -qAt --no-psqlrc
 
 rm $CSVFILE $CSVUTF8FILE

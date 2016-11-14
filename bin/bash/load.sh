@@ -9,7 +9,7 @@ cat << EOF | psql -qAt --no-psqlrc
     array_to_json(array_agg(row_to_json(r)))
     FROM (
         SELECT *
-        FROM data LIMIT 10
+        FROM data
     ) r
 EOF
 ) >> ../../data/data.js
