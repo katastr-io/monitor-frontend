@@ -110,13 +110,11 @@ ul.cadastre-area-autocomplete {
 
 .line-chart {
   flex-wrap: wrap;
-  margin-top: 2rem;
   visibility: hidden;
 }
 
 section.line-chart-header {
   align-items: center;
-  border-top: 1px solid #C7C7CD;
   justify-content: center;
   margin-bottom: 1rem;
   padding-top: 1rem;
@@ -137,7 +135,6 @@ section.line-chart-header {
 }
 
 .chart div {
-    background-color: steelblue;
     color: #1F3C6F;
     font-size: .8rem;
     font-weight: 400;
@@ -152,6 +149,25 @@ section.line-chart-header {
   width: 400px;
 }
 
+section.similar-cadastres {
+  background: #EDEDF3;
+  border-bottom: 1px solid #C7C7CD;
+  border-top: 1px solid #C7C7CD;
+  margin-top: 2rem;
+  padding: .5rem;
+  visibility: hidden;
+}
+
+section.similar-cadastres a {
+  color: #091B3C;
+}
+
+section.similar-cadastres a:hover,
+section.similar-cadastres a:active,
+section.similar-cadastres a:focus
+ {
+  color: #1F3C6F;
+}
 
 .line-chart {
   width: 100%;

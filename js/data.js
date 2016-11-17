@@ -4,11 +4,14 @@ Monitor.Data = {
             return cadastre.ku_nazev === elm.ku_nazev;
         });
 
+        document.querySelector("#cadastre-area").value = `${_new.ku_nazev} / ${_new.ku_kod}`;
+
         if (this.current !== _new) {
             this.current = _new;
             let evt = new CustomEvent("datachange");
             document.querySelector(".chart").dispatchEvent(evt);
             document.querySelector(".info").dispatchEvent(evt);
+            document.querySelector(".similar-cadastres").dispatchEvent(evt);
         }
 
         return this.current;
@@ -30,7 +33,7 @@ Monitor.Data = {
         let evt = new CustomEvent("datechange");
         document.querySelector(".chart").dispatchEvent(evt);
         document.querySelector(".info").dispatchEvent(evt);
-
+        document.querySelector(".similar-cadastres").dispatchEvent(evt);
 
         return this.date;
     },

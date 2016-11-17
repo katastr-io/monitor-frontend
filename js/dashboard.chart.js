@@ -39,8 +39,13 @@ Monitor.Dashboard.Chart = {
         const data = this._getLinechartValues(Monitor.Data.getCurrentLineType());
         const values = Object.values(data);
         const keys = Object.keys(data);
-        console.log(keys, values);
         const domain = [getDomain(values, "min"), getDomain(values, "max")];
+
+        if (domain[0] === domain[1]) { // adjust the Y axis if the values don't change over time
+            domain[0] -= 2;
+            domain[1] += 2;
+        }
+
         const height = 400;
         const width = document.body.clientWidth - 60;
         const range = [360, 10];
