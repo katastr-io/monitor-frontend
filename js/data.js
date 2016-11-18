@@ -1,4 +1,56 @@
 Monitor.Data = {
+    _loadExternalData: function() {
+        return new Promise((resolve, reject) => {
+            let s = document.createElement("script");
+            s.setAttribute("src", "../data/data.js");
+            s.setAttribute("async", true);
+
+            s.addEventListener("load", function() {
+                resolve(data);
+            });
+
+            s.addEventListener("error", function() {
+                reject(`Data from failed to load.`);
+            });
+
+            document.body.appendChild(s);
+        });
+    },
+    load: function() {
+        if (!this.IndexedDB.exists()) { // if not:
+            this._loadExternalData() //      load the data/data.js file asynchronously
+                .then((res) => {
+                    return this.store(res);
+                }).then((res) => {
+                    return this.IndexedDB.write(Monitor.Data.get()); // store the data in the database
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        } else {
+            this.IndexedDB.outdated()
+                .then((outdated) => {
+                    this.IndexedDB.read()
+                        .then((res) => {
+                            Monitor.Data.store(res.map(elm => elm.value));
+                        });
+
+                    if (!outdated) {
+                        return;
+                    }
+
+                    this._loadExternalData()
+                        .then((res) => {
+                            return this.store(res);
+                        }).then((res) => {
+                            return this.IndexedDB.write(Monitor.Data.get());
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                        });
+                });
+        }
+    },
     setCurrent: function(cadastre) {
         let _new = this.data.find((elm) => {
             return cadastre.ku_nazev === elm.ku_nazev;
