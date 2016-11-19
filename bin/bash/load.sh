@@ -1,7 +1,6 @@
 #!/bin/bash
 
-touch ../../data/data.js
-echo "let data =" > ../../data/data.js
+rm -f ../../static/data.js
 
 (
 cat << EOF | psql -qAt --no-psqlrc
@@ -12,4 +11,4 @@ cat << EOF | psql -qAt --no-psqlrc
         FROM data
     ) r
 EOF
-) >> ../../data/data.js
+) > ../../static/data.js
