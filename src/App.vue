@@ -91,4 +91,8 @@ select {
   outline: none;
   width: auto;
 }
+
+path, rect {
+  shape-rendering: crispEdges;
+}
 </style>
