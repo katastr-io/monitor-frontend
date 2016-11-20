@@ -56,7 +56,7 @@ export default {
 
             this.searchResults = this.$store.state.cadastres.list.filter((elm) => {
                 for (let prop of ["ku_nazev", "ku_kod"]) {
-                    if (elm[prop].toString().toLowerCase().startsWith(value)) {
+                    if (elm[prop].toString().toLowerCase().startsWith(value.toLowerCase())) {
                         return elm;
                     }
                 }
