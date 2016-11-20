@@ -3,8 +3,8 @@
         <section class="similar-cadastres">
             <h2>podobná katastrální území</h2>
             <p>
-                <template v-for="(similar, index) in similarCadastres">
-                    <a @click="selectCadastre(similar)" href="#">{{ similar.ku_nazev }}</a><span v-if="index !== similarCadastres.length - 1">, </span>
+                <template v-for="(s, index) in similar">
+                    <a @click="selectCadastre(s)" href="#">{{ s.ku_nazev }}</a><span v-if="index !== similar.length - 1">, </span>
                 </template>
             </p>
         </section>
@@ -14,15 +14,33 @@
 <script>
 export default {
     name: "similar-cadastres",
+    data() {
+        return {
+            similar: [],
+        }
+    },
+    watch: {
+        currentCadastre() {
+            this.similar = this.getSimilarCadastres();
+        },
+        currentDate() {
+            this.similar = this.getSimilarCadastres();
+        }
+    },
+    computed: {
+        currentCadastre() {
+            return this.$store.state.cadastres.currentCadastre;
+        },
+        currentDate() {
+            return this.$store.state.dates.currentDate;
+        }
+    },
     methods: {
         selectCadastre(cadastre) {
             this.$store.commit("selectCadastre", cadastre);
             this.$store.commit("SEARCH_TEXT",`${cadastre.ku_nazev} / ${cadastre.ku_kod}`);
         },
-    },
-    computed: {
-        similarCadastres() {
-            console.log("computing");
+        getSimilarCadastres() {
             const cur = this.$store.state.cadastres.currentCadastre;
             const date = this.$store.state.dates.currentDate;
             const dateIndex = this.$store.state.dates.list.indexOf(date);

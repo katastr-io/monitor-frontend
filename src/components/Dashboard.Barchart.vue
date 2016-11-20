@@ -68,11 +68,12 @@ export default {
 
             bar.append("rect")
                     .attr("transform", "translate(5, 0)")
-                    .attr("fill", function(d) {
-                        let value = keys[values.indexOf(d)]
+                    .attr("fill", function(d, i) {
+                        let value = keys[i]
                             .replace("_v_r", "")
                             .replace("_pp_r", "")
                             .replace("_v_avg", "");
+
                         return self.$store.state.charts.props[value]["color"];
                     })
                     .attr("height", barHeight)
