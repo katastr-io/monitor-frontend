@@ -92,7 +92,7 @@ select {
   width: auto;
 }
 
-path, rect {
+rect {
   shape-rendering: crispEdges;
 }
 </style>
