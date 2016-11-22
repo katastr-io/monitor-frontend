@@ -71,27 +71,27 @@ ALTER TABLE data_${DATE} ADD COLUMN zastavena_plocha_v_avg numeric;
 ALTER TABLE data_${DATE} ADD COLUMN ostatni_plocha_v_avg numeric;
 ---
 UPDATE data_${DATE}
-SET orna_puda_pp_r = round(1.0 * orna_puda_pp / celkovy_pocet_parcel * 100, 2),
-    chmelnice_pp_r = round(1.0 * chmelnice_pp / celkovy_pocet_parcel * 100, 2),
-    vinice_pp_r = round(1.0 * vinice_pp / celkovy_pocet_parcel * 100, 2),
-    zahrada_pp_r = round(1.0 * zahrada_pp / celkovy_pocet_parcel * 100, 2),
-    ovocny_sad_pp_r = round(1.0 * ovocny_sad_pp / celkovy_pocet_parcel * 100, 2),
-    ttp_pp_r = round(1.0 * ttp_pp / celkovy_pocet_parcel * 100, 2),
-    lesni_pozemek_pp_r = round(1.0 * lesni_pozemek_pp / celkovy_pocet_parcel * 100, 2),
-    vodni_plocha_pp_r = round(1.0 * vodni_plocha_pp / celkovy_pocet_parcel * 100, 2),
-    zastavena_plocha_pp_r = round(1.0 * zastavena_plocha_pp / celkovy_pocet_parcel * 100, 2),
-    ostatni_plocha_pp_r = round(1.0 * ostatni_plocha_pp / celkovy_pocet_parcel * 100, 2),
+SET orna_puda_pp_r = orna_puda_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    chmelnice_pp_r = chmelnice_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    vinice_pp_r = vinice_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    zahrada_pp_r = zahrada_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    ovocny_sad_pp_r = ovocny_sad_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    ttp_pp_r = ttp_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    lesni_pozemek_pp_r = lesni_pozemek_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    vodni_plocha_pp_r = vodni_plocha_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    zastavena_plocha_pp_r = zastavena_plocha_pp::numeric / celkovy_pocet_parcel::numeric * 100,
+    ostatni_plocha_pp_r = ostatni_plocha_pp::numeric / celkovy_pocet_parcel::numeric * 100,
     ---
-    orna_puda_v_r = round(1.0 * orna_puda_v / celkova_vymera * 100, 2),
-    chmelnice_v_r = round(1.0 * chmelnice_v / celkova_vymera * 100, 2),
-    vinice_v_r = round(1.0 * vinice_v / celkova_vymera * 100, 2),
-    zahrada_v_r = round(1.0 * zahrada_v / celkova_vymera * 100, 2),
-    ovocny_sad_v_r = round(1.0 * ovocny_sad_v / celkova_vymera * 100, 2),
-    ttp_v_r = round(1.0 * ttp_v / celkova_vymera * 100, 2),
-    lesni_pozemek_v_r = round(1.0 * lesni_pozemek_v / celkova_vymera * 100, 2),
-    vodni_plocha_v_r = round(1.0 * vodni_plocha_v / celkova_vymera * 100, 2),
-    zastavena_plocha_v_r = round(1.0 * zastavena_plocha_v / celkova_vymera * 100, 2),
-    ostatni_plocha_v_r = round(1.0 * ostatni_plocha_v / celkova_vymera * 100, 2),
+    orna_puda_v_r = orna_puda_v::numeric / celkova_vymera::numeric * 100,
+    chmelnice_v_r = chmelnice_v::numeric / celkova_vymera::numeric * 100,
+    vinice_v_r = vinice_v::numeric / celkova_vymera::numeric * 100,
+    zahrada_v_r = zahrada_v::numeric / celkova_vymera::numeric * 100,
+    ovocny_sad_v_r = ovocny_sad_v::numeric / celkova_vymera::numeric * 100,
+    ttp_v_r = ttp_v / celkova_vymera::numeric * 100::numeric,
+    lesni_pozemek_v_r = lesni_pozemek_v::numeric / celkova_vymera::numeric * 100,
+    vodni_plocha_v_r = vodni_plocha_v::numeric / celkova_vymera::numeric * 100,
+    zastavena_plocha_v_r = zastavena_plocha_v::numeric / celkova_vymera::numeric * 100,
+    ostatni_plocha_v_r = ostatni_plocha_v::numeric / celkova_vymera::numeric * 100,
     ---
     orna_puda_v_avg = round(COALESCE((orna_puda_v::numeric / NULLIF(orna_puda_pp, 0)), 0)::numeric),
     chmelnice_v_avg = round(COALESCE((chmelnice_v::numeric / NULLIF(chmelnice_pp, 0)), 0)::numeric),
@@ -119,5 +119,5 @@ SET zemedelska_puda_v1 = (ovocny_sad_v + ttp_v + vinice_v + chmelnice_v + orna_p
     ostatni_plocha_v = (ostatni_plocha_v/10000)::integer;
 
 UPDATE data_${DATE}
-SET zemedelska_puda_v_r1 = round(1.0 * zemedelska_puda_v1 / celkova_vymera * 100, 2),
-    zemedelska_puda_pp_r1 = round(1.0 * zemedelska_puda_pp1 / celkovy_pocet_parcel * 100, 2);
+SET zemedelska_puda_v_r1 = zemedelska_puda_v1 / celkova_vymera * 100,
+    zemedelska_puda_pp_r1 = zemedelska_puda_pp1 / celkovy_pocet_parcel * 100;

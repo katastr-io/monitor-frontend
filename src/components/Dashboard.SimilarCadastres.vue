@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <section class="similar-cadastres">
-            <h2>podobná katastrální území</h2>
+            <h2>podobná katastrální území <small>určeno na základě relativního zastoupení jednotlivých druhů pozemku</small></h2>
             <p>
                 <template v-for="(s, index) in similar">
                     <a @click="selectCadastre(s)" href="#">{{ s.ku_nazev }}</a><span v-if="index !== similar.length - 1">, </span>
@@ -89,5 +89,9 @@ section.similar-cadastres a:active,
 section.similar-cadastres a:focus
  {
   color: #1F3C6F;
+}
+
+section.similar-cadastres h2 small {
+    font-size: 0.8rem;
 }
 </style>

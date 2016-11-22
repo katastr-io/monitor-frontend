@@ -70,11 +70,7 @@ export default {
                 .reduce(toObject, {});
 
             function format(elm) {
-                let value = _type === "v_avg"
-                    ? parseInt(elm[1][dateIndex])
-                    : elm[1][dateIndex].toFixed(2);
-
-                return [elm[0], value];
+                return [elm[0], elm[1][dateIndex]];
             }
 
             function byType(elm) {
@@ -85,7 +81,9 @@ export default {
                 if (!parseFloat(cur[1]) > 0) {
                     return prev;
                 }
-                prev[cur[0]] = cur[1];
+                prev[cur[0]] = _type === "v_avg"
+                    ? cur[1]
+                    : cur[1].toFixed(2);
                 return prev;
             }
         }
