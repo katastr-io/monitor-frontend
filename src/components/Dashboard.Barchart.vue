@@ -85,8 +85,6 @@ export default {
             let _type = this.$store.state.dimensions.list[this.bartype];
             let dateIndex = this.$store.state.dates.list.indexOf(this.$store.state.dates.currentDate);
 
-            console.log(_type, dateIndex, data);
-
             return Object.entries(data)
                 .filter(byType)
                 .map(format)

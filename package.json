@@ -13,7 +13,8 @@
     "dexie": "^1.5.1",
     "vue": "^2.0.1",
     "vue-d3": "^0.1.0",
-    "vuex": "^2.0.0"
+    "vuex": "^2.0.0",
+    "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
