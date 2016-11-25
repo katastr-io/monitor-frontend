@@ -38,6 +38,7 @@ export default {
                 let axis = d3.axisLeft(scale);
                 svg.append("g")
                     .attr("class", "y-axis")
+                    .attr("transform", "translate(60, 0)")
                     .call(axis);
             }
 
@@ -50,7 +51,7 @@ export default {
 
                 svg.append("g")
                     .attr("class", "x-axis")
-                    .attr("transform", `translate(0,${height-40})`)
+                    .attr("transform", `translate(60, ${height-40})`)
                     .call(axis);
             }
 
@@ -76,6 +77,8 @@ export default {
             lineChart.selectAll("svg").remove();
 
             const svg = lineChart.append("svg")
+                .attr("height", height)
+                .attr("width", width)
                 .style("height", height)
                 .style("width", width);
 
@@ -89,6 +92,7 @@ export default {
                     .enter()
                     .append("g")
                     .attr("class", "line")
+                    .attr("transform", "translate(60, 0)")
                     .style("stroke-width", 2)
                     .style("fill", "white")
                     .style("stroke", function(d) {
