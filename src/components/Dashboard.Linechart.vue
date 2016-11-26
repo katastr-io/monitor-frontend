@@ -73,6 +73,9 @@ export default {
                 .domain(domain)
                 .range(range);
             const lineChart = d3.select(".line-chart-plot");
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
 
             lineChart.selectAll("svg").remove();
 
@@ -133,7 +136,17 @@ export default {
                         .attr("r", 3)
                         .style("stroke-width", 2)
                         .on("mouseover", function(e) {
-                            console.log(e);
+                            tooltip.transition()
+                                .duration(200)
+                                .style("opacity", 1);
+                            tooltip.html(e.toFixed(2))
+                                .style("left", `${d3.event.pageX}px`)
+                                .style("top", `${d3.event.pageY - 35}px`);
+                        })
+                        .on("mouseout", () => {
+                            tooltip.transition()
+                                .duration(200)
+                                .style("opacity", 0);
                         });
                 }
             }
@@ -238,20 +251,13 @@ export default {
       transition-duration: .25;
     }
 
-    circle:hover{
-      -webkit-transform: scale(1.5);
-      -moz-transform: scale(1.5);
-      -ms-transform: scale(1.5);
-      -o-transform: scale(1.5);
-      transform: scale(1.5);
-      -webkit-transition: fill, -webkit-transform;
-      -moz-transition: fill, -webkit-transform;
-      -ms-transition: fill, -webkit-transform;
-      -o-transition: fill, -webkit-transform;
-      transition: fill, -webkit-transform;
-      -moz-transition-duration: .25;
-      -ms-transition-duration: .25;
-      -o-transition-duration: .25;
-      transition-duration: .25;
+    div.tooltip {
+        background: #EDEDF3;
+        border:1px solid #C7C7CD;
+        position: absolute;
+        text-align: center;
+        padding: 7px 5px;
+        font: 12px sans-serif;
+        pointer-events: none;
     }
 </style>

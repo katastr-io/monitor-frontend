@@ -111,3 +111,12 @@ export default {
     }
 };
 </script>
+
+<style>
+    rect {
+        -webkit-transition: all 0.30s ease-in-out;
+        -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+        -o-transition: all 0.30s ease-in-out;
+    }
+</style>
