@@ -7,7 +7,7 @@
           <barchart where="parcel" heading="parcely [%]" bartype="parcelRatio"></barchart>
           <barchart where="parcel-avg-area" heading="průměrná výměra parcely [m2]" bartype="parcelAvgArea"></barchart>
         </section>
-          <similar-cadastres></similar-cadastres>
+          <similar-administrative-units></similar-administrative-units>
           <linechart></linechart>
       </section>
     </transition>
@@ -17,7 +17,7 @@
 import Barchart from "./Dashboard.Barchart";
 import Linechart from "./Dashboard.Linechart";
 import BarchartLegend from "./Dashboard.BarchartLegend";
-import SimilarCadastres from "./Dashboard.SimilarCadastres";
+import SimilarAdministrativeUnits from "./Dashboard.SimilarAdministrativeUnits";
 
 export default {
     name: "dashboard",
@@ -25,7 +25,7 @@ export default {
         Barchart,
         Linechart,
         "barchart-legend": BarchartLegend,
-        "similar-cadastres": SimilarCadastres
+        "similar-administrative-units": SimilarAdministrativeUnits
     }
 };
 </script>

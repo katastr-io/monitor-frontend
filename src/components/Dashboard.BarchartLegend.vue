@@ -10,20 +10,30 @@
 <script>
 export default {
     name: "dashboard-legend",
+    data() {
+        return {
+            STATE: this.$store.state
+        };
+    },
     computed: {
         legend() {
-            if (this.$store.state.cadastres.currentCadastre && this.$store.state.dates.currentDate) {
-                return this.drawLegend(this.$store.state.cadastres.currentCadastre, this.bartype, this.where);
+            const au = this.STATE.administrative_units.currentItem;
+            const d = this.STATE.dates.current;
+
+            if (!au || !d) {
+                return false;
             }
+
+            return this.drawLegend(au, this.bartype, this.where);
         }
     },
     methods: {
-        drawLegend: function() {
+        drawLegend() {
             const data = this._getBarchartValues("areaRatio"); // hack to get legend keys
             const keys = Object.keys(data).map((elm) => {
                 for (let prop in this.$store.state.charts.props) {
                     if (elm.startsWith(prop)) {
-                        return this.$store.state.charts.props[prop]["label"];
+                        return this.$store.state.charts.props[prop].label;
                     }
                 }
             });
@@ -45,14 +55,15 @@ export default {
 
             label.attr("class", "label")
                 .attr("cx", 0)
-                .attr("transform", function(d, i) {
-                    return "translate(" + margin + "," + (i * (barHeight + barPadding) + barPadding) + ")";
+                .attr("transform", (d, i) => {
+                    const y = (i * (barHeight + barPadding)) + barPadding;
+                    return `translate(${margin}, ${y})`;
                 });
 
             label.append("text")
                 .attr("class", "value")
                 .attr("y", barHeight / 2)
-                .attr("dy", ".35em") //vertical align middle
+                .attr("dy", ".35em") /* vertical align middle */
                 .attr("text-anchor", "start")
                 .text((d) => {
                     return d;
@@ -60,32 +71,18 @@ export default {
         },
         _getBarchartValues(type) {
             let _type = this.$store.state.dimensions.list[type];
-            let data = this.$store.state.cadastres.currentCadastre;
-            let dateIndex = this.$store.state.dates.list.indexOf(this.$store.state.dates.currentDate);
+            let data = this.STATE.administrative_units.currentItem;
+            let result = {};
 
-
-            return Object.entries(data)
-                .filter(byType)
-                .map(format)
-                .reduce(toObject, {});
-
-            function format(elm) {
-                return [elm[0], elm[1][dateIndex]];
-            }
-
-            function byType(elm) {
-                return elm[0].endsWith(_type);
-            }
-
-            function toObject(prev, cur) {
-                if (!parseFloat(cur[1]) > 0) {
-                    return prev;
+            for (let prop in data) {
+                if (!prop.endsWith(_type) || data[prop] == 0 || prop.indexOf("agriculture") > -1) {
+                    continue;
                 }
-                prev[cur[0]] = _type === "v_avg"
-                    ? cur[1]
-                    : cur[1].toFixed(2);
-                return prev;
+
+                result[prop] = parseFloat(data[prop]).toFixed(2);
             }
+
+            return result;
         }
     }
 };

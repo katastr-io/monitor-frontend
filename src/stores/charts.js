@@ -1,48 +1,49 @@
 export default {
     state: {
         props: {
-            orna_puda: {
+            arable_land: {
                 color: "#543511",
                 label: "orná půda"
             },
-            chmelnice: {
+            hop_garden: {
                 color: "#CFF09E",
                 label: "chmelnice"
             },
-            vinice: {
+            vineyard: {
                 color: "#AB565F",
                 label: "vinice"
             },
-            zahrada: {
+            garden: {
                 color: "#FF9900",
                 label: "zahrada"
             },
-            ovocny_sad: {
+            orchard: {
                 color: "#F02311",
                 label: "ovocný sad"
             },
-            ttp: {
+            grassland: {
                 color: "#7FAF1B",
                 label: "trvalý travní porost"
             },
-            lesni_pozemek: {
+            forest: {
                 color: "#003000",
                 label: "lesní pozemek"
             },
-            vodni_plocha: {
+            waterbody: {
                 color: "#21AABD",
                 label: "vodní plocha"
             },
-            zastavena_plocha: {
+            builtup_area: {
                 color: "#7F828C",
                 label: "zastavěná plocha"
             },
-            ostatni_plocha: {
+            other_area: {
                 color: "#4E5054",
                 label: "ostatní plocha"
             },
-            zemedelska_puda: {
-                color: "#FABF23"
+            agriculture_land: {
+                color: "#FABF23",
+                label: "zemědělská půda"
             }
         }
     }

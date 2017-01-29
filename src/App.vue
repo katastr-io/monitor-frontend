@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <loader v-show="!ready"></loader>
-    <search v-show="ready"></search>
+    <search></search>
     <info v-show="visible"></info>
     <dashboard v-show="visible"></dashboard>
+    <h1 v-show="!visible">Monitor využití pozemků v KN sleduje vývoj v&nbsp;katastrálních územích, obcích, okresech a&nbsp;krajích České republiky.</h1>
   </div>
 </template>
 
@@ -16,19 +16,17 @@ import store from "./stores/store";
 
 export default {
     store,
-    name: 'app',
+    name: "app",
     components: {
-        Dashboard, Info, Loader, Search,
+        Dashboard, Info, Loader, Search
     },
     mounted() {
-        this.$store.dispatch("initialize");
+        this.$store.dispatch("getAdministrativeUnits");
+        this.$store.dispatch("getDates");
     },
     computed: {
-        ready() {
-            return this.$store.getters.ready;
-        },
-        visible: function() {
-        return !!(this.$store.state.cadastres.currentCadastre && this.$store.state.dates.currentDate);
+        visible() {
+            return !!(this.$store.state.administrative_units.currentItem && this.$store.state.dates.current);
         }
     }
 };
@@ -76,6 +74,12 @@ select {
   padding-left: 1rem;
 }
 
+h1 {
+  font-weight: 300;
+  margin: 4rem auto;
+  width: 50%;
+}
+
 h2 {
   font-weight: 300;
 }
@@ -85,7 +89,6 @@ input:active,
 input:focus,
 select {
   border: none;
-  border-bottom: 1px solid #1F3C6F;
   font-family: inherit;
   margin-top: 2px;
   outline: none;

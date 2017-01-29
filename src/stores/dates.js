@@ -1,20 +1,23 @@
 export default {
     state: {
-        list: [
-            "1. 1. 2015",
-            "1. 4. 2015",
-            "1. 7. 2015",
-            "1. 10. 2015",
-            "1. 1. 2016",
-            "1. 4. 2016",
-            "1. 7. 2016",
-            "1. 10. 2016"
-        ],
-        currentDate: null
+        list: [],
+        current: null
+    },
+    getters: {
+        reverseDates: state => {
+            return [].concat(state.list).reverse(); // avoid in place reversion
+        },
+        stringDates: state => {
+            return state.list.map(elm => elm.repr);
+        }
     },
     mutations: {
-        selectDate(state, date) {
-            state.currentDate = date;
+        LOAD_DATES(state, data) {
+            state.list = data;
+            state.current = data[data.length - 1];
+        },
+        SET_CURRENT_DATE(state, date) {
+            state.current = state.list.find((elm) => elm.valid_at === date);
         }
     }
 };

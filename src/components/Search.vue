@@ -1,21 +1,29 @@
 <template>
     <transition name="slow-fade">
         <header>
-            <h1>Katastrální území</h1>
-            <div class="cadastre-search">
-                <input @keyup="autocomplete" :value="this.STATE.cadastres.searchText" type="text" id="cadastre-area" placeholder="jméno nebo kód" autofocus>
-                <div v-show="searchResults.length">
-                    <ul class="cadastre-area-autocomplete">
-                        <li @click="selectCadastre(result, $event)" v-for="result in searchResults">{{ result.ku_nazev }} / {{result.ku_kod }}</li>
+            <div class="search-unit-box">
+              <form>
+                  <select @change="setAdministrativeUnit">
+                      <option :value="au.name" v-for="au in this.STATE.administrative_units.list">{{ au.repr }}</option>
+                  </select>
+              </form>
+            </div>
+            <div class="search-name-box">
+                <form>
+                  <input @keyup="autocomplete" :value="this.STATE.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
+                </form>
+                <div v-show="results.length">
+                    <ul class="search-name-autocomplete">
+                        <li @click="select(result, $event)" v-for="result in results">{{ result.name }} / {{result.code }}</li>
                     </ul>
                 </div>
             </div>
-            <div class="cadastre-date">
-            <form>
-                <select :value="currentDate" @change="selectDate">
-                    <option :value="date" v-for="date in this.STATE.dates.list">{{ date }}</option>
-                </select>
-            </form>
+            <div class="search-date-box">
+              <form>
+                  <select @change="setDate">
+                      <option :value="date.valid_at" v-for="date in this.reverseDates">{{ date.repr }}</option>
+                  </select>
+              </form>
             </div>
         </header>
     </transition>
@@ -25,62 +33,81 @@
 export default {
     name: "search",
     data() {
-        return {
-            searchResults: [],
-            STATE: this.$store.state
-        };
+      return {
+        results: [],
+        requested: false,
+        STATE: this.$store.state
+      };
     },
     computed: {
-        currentDate() {
-            return this.STATE.dates.currentDate;
-        }
+      reverseDates() {
+        return this.$store.getters.reverseDates;
+      },
+      currentDate() {
+        return this.STATE.dates.current;
+      }
     },
-    mounted() {
-        this.$store.commit("selectDate", this.STATE.dates.list[0]);
+    watch: {
+      currentDate() {
+        let au = this.STATE.administrative_units.currentItem;
+
+        if (!au) {
+          return;
+        }
+
+        this.select(this.STATE.administrative_units.currentItem);
+      }
     },
     methods: {
-        autocomplete(e) {
-            let value = e.target.value;
-            let elm = document.querySelector(".cadastre-area-autocomplete");
+      autocomplete(e) {
+        let value = e.target.value;
+        let elm = document.querySelector(".search-name-autocomplete");
 
-            this.$store.commit("SEARCH_TEXT", value);
+        this.$store.commit("SEARCH_TEXT", value);
 
-            if (value.length < 2) {
-                this.searchResults = [];
-                elm.style.visibility = "hidden";
+        if (value.length < 2) {
+          this.results = [];
+          elm.style.visibility = "hidden";
 
-                return;
-            }
-
-            elm.style.visibility = "visible";
-
-            this.searchResults = this.$store.state.cadastres.list.filter((elm) => {
-                for (let prop of ["ku_nazev", "ku_kod"]) {
-                    if (elm[prop].toString().toLowerCase().startsWith(value.toLowerCase())) {
-                        return elm;
-                    }
-                }
-            });
-        },
-        selectCadastre(cadastre, e) {
-            this.$store.commit("selectCadastre", cadastre);
-            this.$store.commit("SEARCH_TEXT",`${cadastre.ku_nazev} / ${cadastre.ku_kod}`);
-            this.searchResults = [];
-
-            if (e) {
-                e.target.parentNode.style.visibility = "hidden";
-            }
-
-            this.$emit("test");
-        },
-        selectDate(e) {
-            this.currentDate = e.target.value;
-            this.$store.commit("selectDate", e.target.value);
-
-            if (this.STATE.cadastres.currentCadastre) {
-                this.selectCadastre(this.STATE.cadastres.currentCadastre);
-            }
+          return;
         }
+
+        elm.style.visibility = "visible";
+
+        if (this.requested || e.ctrlKey || e.keyCode < 50) {
+          return;
+        }
+
+        this.requested = true;
+        this.$http.post(`${this.$store.getters.resource.url}/lookup`, {
+          query: value,
+          valid_at: this.currentDate.valid_at
+        }).then((res) => {
+            this.results = res.data;
+            this.requested = false;
+            return res.data;
+          }).catch((err) => {
+            this.requested = false;
+            return false;
+          });
+      },
+      select(item, e) {
+        this.$http.get(`${this.$store.getters.resource.url}/${item.code}/${this.currentDate.valid_at}`)
+          .then((res) => {
+            this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", res.data);
+            this.$store.commit("SEARCH_TEXT",`${item.name} / ${item.code}`);
+            this.results = [];
+            e.target.parentNode.style.visibility = "hidden";
+          }).catch((err) => {
+            return false;
+          });
+      },
+      setAdministrativeUnit(e) {
+        this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT_TYPE", e.target.value);
+      },
+      setDate(e) {
+        this.$store.commit("SET_CURRENT_DATE", e.target.value);
+      }
     }
 };
 </script>
@@ -122,22 +149,18 @@ export default {
         padding-top: 2px;
       }
 
-      header form {
-          border-bottom: 1px solid #1F3C6F;
-
-      }
-
-        header form:before {
+        header .search-date-box form:before {
             content: "stav k";
         }
 
-    ul.cadastre-area-autocomplete {
+    ul.search-name-autocomplete {
       border-bottom: 1px solid #1F3C6F;
+      border-top: 1px solid #1F3C6F;
       list-style: none;
       padding-left: 0px;
     }
 
-      ul.cadastre-area-autocomplete li {
+      ul.search-name-autocomplete li {
         cursor: pointer;
         padding-bottom: 8px;
         padding-top: 8px;

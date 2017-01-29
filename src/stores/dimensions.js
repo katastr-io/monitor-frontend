@@ -3,11 +3,11 @@ export default {
         list: {
             "areaAbsolute": "_v",
             "agrAreaAbsolute": "zemedelska_puda_v1",
-            "areaRatio": "v_r",
+            "areaRatio": "area_ratio",
             "parcelAbsolute": "_pp",
             "agrParcelAbsolute": "zemedelska_puda_pp1",
-            "parcelRatio": "pp_r",
-            "parcelAvgArea": "v_avg"
+            "parcelRatio": "count_ratio",
+            "parcelAvgArea": "area_average"
         }
     }
 };
