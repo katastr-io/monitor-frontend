@@ -10,7 +10,7 @@
             </div>
             <div class="search-name-box">
                 <form>
-                  <input @keyup="autocomplete" :value="this.STATE.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
+                  <input @keyup="autocomplete" @blur="reset" :value="this.STATE.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
                 </form>
                 <div v-show="results.length">
                     <ul class="search-name-autocomplete">
@@ -45,6 +45,13 @@ export default {
       },
       currentDate() {
         return this.STATE.dates.current;
+      },
+      currentSearch() {
+        if (!this.STATE.administrative_units.currentItem) {
+            return;
+        }
+
+        return `${this.STATE.administrative_units.currentItem.name} / ${this.STATE.administrative_units.currentItem.code}`;
       }
     },
     watch: {
@@ -64,6 +71,10 @@ export default {
         let elm = document.querySelector(".search-name-autocomplete");
 
         this.$store.commit("SEARCH_TEXT", value);
+
+        if (!value) {
+            this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", null);
+        }
 
         if (value.length < 2) {
           this.results = [];
@@ -90,6 +101,9 @@ export default {
             this.requested = false;
             return false;
           });
+      },
+      reset() {
+        this.$store.commit("SEARCH_TEXT", this.currentSearch);
       },
       select(item, e) {
         this.$http.get(`${this.$store.getters.resource.url}/${item.code}/${this.currentDate.valid_at}`)
