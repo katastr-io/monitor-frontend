@@ -11,5 +11,5 @@ rsync -aqz ~/clone/dist/* codeship@193.85.199.37:${HOMEDIR}/monitor-frontend-${C
 ssh codeship@193.85.199.37 << EOF
 find ${HOMEDIR} -maxdepth 1 -type d ! -name monitor-frontend-${COMMIT} -name 'monitor-frontend-*' -exec rm -rf '{}' \;
 rm ${HOMEDIR}/monitor-frontend
-ln -s $HOMEDIR}/monitor-frontend-${COMMIT} ${HOMEDIR}/monitor-frontend
+ln -s ${HOMEDIR}/monitor-frontend-${COMMIT} ${HOMEDIR}/monitor-frontend
 EOF
