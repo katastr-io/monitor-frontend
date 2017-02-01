@@ -3,7 +3,7 @@
         <section class="similar-administrative-units">
             <h2>{{boxText[1]}} {{ this.$store.getters.resource.plural }} <small>určeno na základě relativního zastoupení jednotlivých druhů pozemku</small></h2>
             <p>
-                <template v-show="!similar.length">
+                <template v-if="similar.length === 0">
                     {{boxText.join(" ")}} {{ this.$store.getters.resource.plural }}.
                 </template>
                 <template v-for="(s, index) in similar">
@@ -61,7 +61,18 @@ export default {
                 .then((res) => {
                     self.similar = res.data;
                 });
-        }
+        },
+        select(item, e) {
+            this.$http.get(`${this.$store.getters.resource.url}/${item.code}/${this.currentDate.valid_at}`)
+                .then((res) => {
+                    this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", res.data);
+                    this.$store.commit("SEARCH_TEXT",`${item.name} / ${item.code}`);
+                    this.results = [];
+                    e.target.parentNode.style.visibility = "hidden";
+                }).catch((err) => {
+                    return false;
+                });
+        },
     }
 };
 </script>
