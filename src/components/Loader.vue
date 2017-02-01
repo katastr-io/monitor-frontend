@@ -18,6 +18,7 @@ export default {
 
 <style scoped>
     .showbox {
+      background: white;
       position: absolute;
       top: 100px;
       bottom: 0;

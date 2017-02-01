@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <loader v-show="!ready"></loader>
     <search></search>
     <info v-show="visible"></info>
     <dashboard v-show="visible"></dashboard>
@@ -25,8 +26,8 @@ export default {
         this.$store.dispatch("getDates");
     },
     computed: {
-        visible() {
-            return !!(this.$store.state.administrative_units.currentItem && this.$store.state.dates.current);
+        ready() {
+            return this.$store.state.administrative_units.currentType && this.$store.state.dates.current;
         }
     }
 };
