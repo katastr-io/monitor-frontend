@@ -9,12 +9,14 @@
               </form>
             </div>
             <div class="search-name-box">
-                <form>
+                <form autocomplete="off">
                   <input @keyup="autocomplete" @blur="reset" :value="this.STATE.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
                 </form>
-                <div v-show="results.length">
-                    <ul class="search-name-autocomplete">
+                <div>
+                    <loader v-show="requested"></loader>
+                    <ul v-show="results.length" class="search-name-autocomplete">
                         <li @click="select(result, $event)" v-for="result in results">{{ result.name }} / {{result.code }}</li>
+                        <li v-if="notFound">Nenašli jsme žádné výsledky</li>
                     </ul>
                 </div>
             </div>
@@ -30,8 +32,13 @@
 </template>
 
 <script>
+import Loader from "./Loader";
+
 export default {
     name: "search",
+    components: {
+        Loader
+    },
     data() {
       return {
         results: [],
@@ -52,6 +59,9 @@ export default {
         }
 
         return `${this.STATE.administrative_units.currentItem.name} / ${this.STATE.administrative_units.currentItem.code}`;
+      },
+      notFound() {
+        return this.STATE.administrative_units.searchText && this.results.length === 0 && !this.requested;
       }
     },
     watch: {
@@ -78,14 +88,15 @@ export default {
 
         if (value.length < 2) {
           this.results = [];
-          elm.style.visibility = "hidden";
+          elm.style.display = "none";
 
           return;
         }
 
-        elm.style.visibility = "visible";
+        elm.style.display = "block";
 
-        if (this.requested || e.ctrlKey || e.keyCode < 50) {
+        /* if ctrl or any other `meta` key except delete and backspace */
+        if (this.requested || e.ctrlKey || (e.keyCode < 50 && e.keyCode != 8 && e.keyCode != 46)) {
           return;
         }
 
@@ -190,5 +201,9 @@ export default {
     border: none;
     margin-top: -2px !important;
     padding-left: 1rem;
+    }
+
+    .search-name-box .showbox {
+        top: 40px;
     }
 </style>
