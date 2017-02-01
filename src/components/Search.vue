@@ -3,7 +3,7 @@
         <header>
             <div class="search-unit-box">
               <form>
-                  <select @change="setAdministrativeUnit">
+                  <select @change="changeAdministrativeUnit">
                       <option :value="au.name" v-for="au in this.STATE.administrative_units.list">{{ au.repr }}</option>
                   </select>
               </form>
@@ -116,9 +116,14 @@ export default {
             return false;
           });
       },
-      setAdministrativeUnit(e) {
-        this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT_TYPE", e.target.value);
-      },
+        changeAdministrativeUnit(e) {
+            if (this.STATE.administrative_units.currentType.name !== e.target.value) {
+                this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", null);
+                this.$store.commit("SEARCH_TEXT", null);
+            }
+
+            this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT_TYPE", e.target.value);
+        },
       setDate(e) {
         this.$store.commit("SET_CURRENT_DATE", e.target.value);
       }
