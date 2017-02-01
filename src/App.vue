@@ -1,9 +1,12 @@
 <template>
   <div id="app">
-    <search></search>
+    <loader v-show="!loaded"></loader>
+    <search v-show="loaded"></search>
     <info v-show="visible"></info>
     <dashboard v-show="visible"></dashboard>
-    <h1 v-show="!visible">Monitor využití pozemků v KN sleduje vývoj v&nbsp;katastrálních územích, obcích, okresech a&nbsp;krajích České republiky.</h1>
+    <transition appear name="slow-fade">
+        <h1 v-show="!visible">Monitor využití pozemků v KN sleduje vývoj v&nbsp;katastrálních územích, obcích, okresech a&nbsp;krajích České republiky.</h1>
+    </transition>
   </div>
 </template>
 
@@ -20,7 +23,15 @@ export default {
     components: {
         Dashboard, Info, Loader, Search
     },
+    data() {
+        return {
+            loaded: false
+        }
+    },
     mounted() {
+        this.loaded = true;
+    },
+    created() {
         this.$store.dispatch("getAdministrativeUnits");
         this.$store.dispatch("getDates");
     },
