@@ -16,8 +16,8 @@
                     <loader transition="fade" v-show="requested"></loader>
                      <ul v-show="results.length" class="search-name-autocomplete">
                         <li @click="select(result, $event)" v-for="result in results">{{ result.name }} / {{result.code }}</li>
-                        <li v-if="notFound">Nenašli jsme žádné výsledky</li>
                     </ul>
+                    <p v-if="notFound">Nenašli jsme žádné výsledky</p>
                 </div>
             </div>
             <div class="search-date-box">
@@ -60,7 +60,11 @@ export default {
         return `${this.$store.state.administrative_units.currentItem.name} / ${this.$store.state.administrative_units.currentItem.code}`;
       },
       notFound() {
-        return this.$store.state.administrative_units.searchText && this.results.length === 0 && !this.requested;
+        return this.$store.state.administrative_units.searchText &&
+            !this.$store.state.administrative_units.currentItem &&
+            this.$store.state.administrative_units.searchText.length > 2 &&
+            this.results.length === 0 &&
+            !this.requested;
       }
     },
     watch: {
