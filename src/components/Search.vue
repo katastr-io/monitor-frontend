@@ -78,6 +78,7 @@ export default {
     methods: {
       autocomplete(e) {
         let value = e.target.value;
+        let self = this;
         let elm = document.querySelector(".search-name-autocomplete");
 
         this.$store.commit("SEARCH_TEXT", value);
@@ -88,28 +89,26 @@ export default {
 
         if (value.length < 2) {
           this.results = [];
-          elm.style.display = "none";
-
           return;
         }
-
-        elm.style.display = "block";
 
         /* if ctrl or any other `meta` key except delete and backspace */
         if (this.requested || e.ctrlKey || (e.keyCode < 50 && e.keyCode != 8 && e.keyCode != 46)) {
           return;
         }
 
+        console.log("test");
+
         this.requested = true;
         this.$http.post(`${this.$store.getters.resource.url}/lookup`, {
           query: value,
           valid_at: this.currentDate.valid_at
         }).then((res) => {
-            this.results = res.data;
-            this.requested = false;
+            self.results = res.data;
+            self.requested = false;
             return res.data;
           }).catch((err) => {
-            this.requested = false;
+            self.requested = false;
             return false;
           });
       },
@@ -122,7 +121,6 @@ export default {
             this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", res.data);
             this.$store.commit("SEARCH_TEXT",`${item.name} / ${item.code}`);
             this.results = [];
-            e.target.parentNode.style.visibility = "hidden";
           }).catch((err) => {
             return false;
           });
