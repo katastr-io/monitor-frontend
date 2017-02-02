@@ -1,5 +1,5 @@
 <template>
-    <transition name="slow-fade">
+    <transition :name="transition">
         <div class="showbox">
           <div class="loader">
             <svg class="circular" viewBox="25 25 50 50">
@@ -12,7 +12,8 @@
 
 <script>
 export default {
-    name: "loader"
+    name: "loader",
+    props: ["transition"]
 };
 </script>
 

@@ -4,17 +4,17 @@
             <div class="search-unit-box">
               <form>
                   <select @change="changeAdministrativeUnit">
-                      <option :value="au.name" v-for="au in this.STATE.administrative_units.list">{{ au.repr }}</option>
+                      <option :value="au.name" v-for="au in this.$store.state.administrative_units.list">{{ au.repr }}</option>
                   </select>
               </form>
             </div>
             <div class="search-name-box">
                 <form autocomplete="off">
-                  <input @keyup="autocomplete" @blur="reset" :value="this.STATE.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
+                  <input @input="autocomplete" @blur="reset" :value="this.$store.state.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
                 </form>
                 <div>
-                    <loader v-show="requested"></loader>
-                    <ul v-show="results.length" class="search-name-autocomplete">
+                    <loader transition="fade" v-show="requested"></loader>
+                     <ul v-show="results.length" class="search-name-autocomplete">
                         <li @click="select(result, $event)" v-for="result in results">{{ result.name }} / {{result.code }}</li>
                         <li v-if="notFound">Nenašli jsme žádné výsledky</li>
                     </ul>
@@ -42,8 +42,7 @@ export default {
     data() {
       return {
         results: [],
-        requested: false,
-        STATE: this.$store.state
+        requested: false
       };
     },
     computed: {
@@ -51,35 +50,33 @@ export default {
         return this.$store.getters.reverseDates;
       },
       currentDate() {
-        return this.STATE.dates.current;
+        return this.$store.state.dates.current;
       },
       currentSearch() {
-        if (!this.STATE.administrative_units.currentItem) {
+        if (!this.$store.state.administrative_units.currentItem) {
             return;
         }
 
-        return `${this.STATE.administrative_units.currentItem.name} / ${this.STATE.administrative_units.currentItem.code}`;
+        return `${this.$store.state.administrative_units.currentItem.name} / ${this.$store.state.administrative_units.currentItem.code}`;
       },
       notFound() {
-        return this.STATE.administrative_units.searchText && this.results.length === 0 && !this.requested;
+        return this.$store.state.administrative_units.searchText && this.results.length === 0 && !this.requested;
       }
     },
     watch: {
       currentDate() {
-        let au = this.STATE.administrative_units.currentItem;
+        let au = this.$store.state.administrative_units.currentItem;
 
         if (!au) {
           return;
         }
 
-        this.select(this.STATE.administrative_units.currentItem);
+        this.select(this.$store.state.administrative_units.currentItem);
       }
     },
     methods: {
       autocomplete(e) {
         let value = e.target.value;
-        let self = this;
-        let elm = document.querySelector(".search-name-autocomplete");
 
         this.$store.commit("SEARCH_TEXT", value);
 
@@ -97,18 +94,16 @@ export default {
           return;
         }
 
-        console.log("test");
-
         this.requested = true;
         this.$http.post(`${this.$store.getters.resource.url}/lookup`, {
           query: value,
           valid_at: this.currentDate.valid_at
         }).then((res) => {
-            self.results = res.data;
-            self.requested = false;
+            this.results = res.data;
+            this.requested = false;
             return res.data;
           }).catch((err) => {
-            self.requested = false;
+            this.requested = false;
             return false;
           });
       },
@@ -126,7 +121,7 @@ export default {
           });
       },
         changeAdministrativeUnit(e) {
-            if (this.STATE.administrative_units.currentType.name !== e.target.value) {
+            if (this.$store.state.administrative_units.currentType.name !== e.target.value) {
                 this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", null);
                 this.$store.commit("SEARCH_TEXT", null);
             }

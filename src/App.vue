@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <loader v-show="!loaded"></loader>
+    <loader transition="slow-fade" v-show="!loaded"></loader>
     <search v-show="loaded"></search>
     <info v-show="visible"></info>
     <dashboard v-show="visible"></dashboard>
