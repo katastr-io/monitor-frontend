@@ -71,7 +71,7 @@ export default {
                 }
 
                 const height = 400;
-                const width = document.body.clientWidth - 60;
+                const width = document.body.clientWidth - 90;
                 const range = [360, 10];
                 const scale = this.$d3.scaleLinear()
                     .domain(domain)

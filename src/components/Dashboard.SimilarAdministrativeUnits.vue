@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <section class="similar-administrative-units">
+        <section class="box similar-administrative-units">
             <h2>{{boxText[1]}} {{ this.$store.getters.resource.plural }} <small>určeno na základě relativního zastoupení jednotlivých druhů pozemku</small></h2>
             <p>
                 <template v-if="similar.length === 0">
@@ -68,7 +68,6 @@ export default {
                     this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", res.data);
                     this.$store.commit("SEARCH_TEXT",`${item.name} / ${item.code}`);
                     this.results = [];
-                    e.target.parentNode.style.visibility = "hidden";
                 }).catch((err) => {
                     return false;
                 });
@@ -76,29 +75,3 @@ export default {
     }
 };
 </script>
-
-<style>
-section.similar-administrative-units {
-  background: #EDEDF3;
-  border-bottom: 1px solid #C7C7CD;
-  border-top: 1px solid #C7C7CD;
-  flex-basis: 100%;
-  margin-top: 2rem;
-  padding: .5rem;
-}
-
-section.similar-administrative-units a {
-  color: #091B3C;
-}
-
-section.similar-administrative-units a:hover,
-section.similar-administrative-units a:active,
-section.similar-administrative-units a:focus
- {
-  color: #1F3C6F;
-}
-
-section.similar-administrative-units h2 small {
-    font-size: 0.8rem;
-}
-</style>
