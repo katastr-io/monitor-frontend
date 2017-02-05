@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "leaflet": "^1.0.3",
     "vue": "^2.0.1",
     "vue-d3": "^0.1.0",
+    "vue2-leaflet": "^0.0.31",
     "vuex": "^2.0.0"
   },
   "devDependencies": {

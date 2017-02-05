@@ -8,6 +8,7 @@
             <transition appear name="slow-fade">
                 <h1 v-show="!visible">Monitor využití pozemků v KN sleduje vývoj v&nbsp;katastrálních územích, obcích, okresech a&nbsp;krajích České republiky.</h1>
             </transition>
+            <au-map></au-map>
         </main>
         <footer class="box">
             <small><a href="//www.katastr.io">www.katastr.io</a></small>
@@ -21,12 +22,13 @@ import Info from "./components/Info";
 import Loader from "./components/Loader";
 import Search from "./components/Search";
 import store from "./stores/store";
+import AuMap from "./components/Map";
 
 export default {
     store,
     name: "app",
     components: {
-        Dashboard, Info, Loader, Search
+        Dashboard, Info, Loader, Search, AuMap
     },
     data() {
         return {

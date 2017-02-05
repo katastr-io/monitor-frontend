@@ -86,6 +86,7 @@ export default {
 
         if (!value) {
             this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", null);
+            this.$store.dispatch("loadGeometry");
         }
 
         if (value.length < 2) {
@@ -119,6 +120,7 @@ export default {
           .then((res) => {
             this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", res.data);
             this.$store.commit("SEARCH_TEXT",`${item.name} / ${item.code}`);
+            this.$store.dispatch("loadGeometry");
             this.results = [];
           }).catch((err) => {
             return false;
@@ -128,6 +130,7 @@ export default {
             if (this.$store.state.administrative_units.currentType.name !== e.target.value) {
                 this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT", null);
                 this.$store.commit("SEARCH_TEXT", null);
+                this.$store.dispatch("loadGeometry");
             }
 
             this.$store.commit("SET_CURRENT_ADMINISTRATIVE_UNIT_TYPE", e.target.value);

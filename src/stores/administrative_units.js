@@ -3,6 +3,7 @@ export default {
         list: [],
         currentType: null,
         currentItem: null,
+        currentGeometry: null,
         searchText: ""
     },
     getters: {
@@ -44,6 +45,9 @@ export default {
         },
         SET_CURRENT_ADMINISTRATIVE_UNIT(state, item) {
             state.currentItem = item;
+        },
+        SET_CURRENT_GEOMETRY(state, item) {
+            state.currentGeometry = item && JSON.parse(item.geom);
         },
         SEARCH_TEXT(state, text) {
             state.searchText = text;
