@@ -33,6 +33,7 @@
 
 <script>
 import Loader from "./Loader";
+import debounce from "lodash/debounce";
 
 export default {
     name: "search",
@@ -80,6 +81,7 @@ export default {
     },
     methods: {
       autocomplete(e) {
+        let self = this;
         let value = e.target.value;
 
         this.$store.commit("SEARCH_TEXT", value);
@@ -95,22 +97,27 @@ export default {
         }
 
         /* if ctrl or any other `meta` key except delete and backspace */
-        if (this.requested || e.ctrlKey || (e.keyCode < 50 && e.keyCode != 8 && e.keyCode != 46)) {
+        if (e.ctrlKey || (e.keyCode < 50 && e.keyCode != 8 && e.keyCode != 46)) {
           return;
         }
 
+        const lookup = debounce(
+            function() {
+                self.$http.post(`${self.$store.getters.resource.url}/lookup`, {
+                  query: value,
+                  valid_at: self.currentDate.valid_at
+                }).then((res) => {
+                    self.results = res.data;
+                    self.requested = false;
+                    return res.data;
+                  }).catch((err) => {
+                    self.requested = false;
+                    return false;
+                  });
+            }, 500);
+
         this.requested = true;
-        this.$http.post(`${this.$store.getters.resource.url}/lookup`, {
-          query: value,
-          valid_at: this.currentDate.valid_at
-        }).then((res) => {
-            this.results = res.data;
-            this.requested = false;
-            return res.data;
-          }).catch((err) => {
-            this.requested = false;
-            return false;
-          });
+        lookup();
       },
       reset() {
         this.$store.commit("SEARCH_TEXT", this.currentSearch);
