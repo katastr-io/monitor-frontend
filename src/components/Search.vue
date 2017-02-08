@@ -121,6 +121,7 @@ export default {
       },
       reset() {
         this.$store.commit("SEARCH_TEXT", this.currentSearch);
+        this.results = [];
       },
       select(item, e) {
         this.$http.get(`${this.$store.getters.resource.url}/${item.code}/${this.currentDate.valid_at}`)
