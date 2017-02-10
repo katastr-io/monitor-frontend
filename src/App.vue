@@ -30,14 +30,6 @@ export default {
     components: {
         Dashboard, Info, Loader, Search, AuMap
     },
-    data() {
-        return {
-            loaded: false
-        }
-    },
-    mounted() {
-        this.loaded = true;
-    },
     created() {
         this.$store.dispatch("getAdministrativeUnits");
         this.$store.dispatch("getDates");
@@ -45,6 +37,9 @@ export default {
     computed: {
         visible() {
             return !!(this.$store.state.administrative_units.currentItem && this.$store.state.dates.current);
+        },
+        loaded() {
+            return this.$store.state.administrative_units.list.length > 0 && this.$store.state.dates.list.length > 0;
         }
     }
 };
