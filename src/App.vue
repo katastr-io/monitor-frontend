@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
-        <main>
-            <loader transition="slow-fade" v-show="!loaded"></loader>
+    <main id="app">
+        <loader transition="slow-fade" v-show="!loaded"></loader>
+        <section>
             <search id="search" v-show="loaded"></search>
             <info v-show="visible"></info>
             <dashboard v-show="visible"></dashboard>
@@ -9,11 +9,11 @@
                 <h1 v-show="!visible">Monitor využití pozemků v KN sleduje vývoj v&nbsp;katastrálních územích, obcích, okresech a&nbsp;krajích České republiky.</h1>
             </transition>
             <au-map></au-map>
-        </main>
+        </section>
         <footer class="box">
             <small><a href="//www.katastr.io">www.katastr.io</a></small>
         </footer>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style>
-body {
+html, body {
     background: white;
     color: #1F3C6F;
     font-family: 'Roboto', sans-serif;
@@ -55,20 +55,25 @@ body {
     padding: 0;
 }
 
-div#app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+main {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100vh;
 }
 
-#search {
-    margin-top: 1.5rem;
-}
-
-main {
+section {
     flex: 1 0 auto;
+}
+
+input,
+select,
+option {
+  color: #1F3C6F;
+  font-size: 2.6rem;
+  font-weight: 300;
 }
 
 input {
@@ -133,7 +138,6 @@ rect {
     background: #EDEDF3;
     border-bottom: 1px solid #C7C7CD;
     border-top: 1px solid #C7C7CD;
-    flex-basis: 100%;
     margin-top: 2rem;
     padding: .5rem;
 }
@@ -155,5 +159,22 @@ rect {
 footer {
     margin-bottom: .5rem;
     text-align: center;
+    flex: none;
+}
+
+@media all and (max-width: 1300px) and (min-width: 1000px) {
+    input,
+    select,
+    option {
+      font-size: 2rem;
+    }
+}
+
+@media all and (max-width: 1000px) {
+    input,
+    select,
+    option {
+      font-size: 1.5rem;
+    }
 }
 </style>

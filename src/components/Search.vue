@@ -1,33 +1,23 @@
 <template>
     <transition name="slow-fade">
-        <header>
-            <div class="search-unit-box">
-              <form>
-                  <select @change="changeAdministrativeUnit">
-                      <option :value="au.name" v-for="au in this.$store.state.administrative_units.list">{{ au.repr }}</option>
-                  </select>
-              </form>
-            </div>
-            <div class="search-name-box">
-                <form autocomplete="off">
-                  <input @input="autocomplete" @blur="reset" :value="this.$store.state.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
-                </form>
+        <section>
+            <form autocomplete="off">
+                <select @change="changeAdministrativeUnit" v-bind:class="{border: this.results.length}">
+                    <option :value="au.name" v-for="au in this.$store.state.administrative_units.list">{{ au.repr }}</option>
+                </select>
                 <div>
+                    <input @input="autocomplete" :value="this.$store.state.administrative_units.searchText" type="text" id="search-name" placeholder="jméno nebo kód" autofocus>
                     <loader transition="fade" v-show="requested"></loader>
-                     <ul v-show="results.length" class="search-name-autocomplete">
+                    <ul v-show="results.length">
                         <li @click="select(result, $event)" v-for="result in results">{{ result.name }} / {{result.code }}</li>
                     </ul>
                     <p v-if="notFound">Nenašli jsme žádné výsledky</p>
                 </div>
-            </div>
-            <div class="search-date-box">
-              <form>
-                  <select @change="setDate">
-                      <option :value="date.valid_at" v-for="date in this.reverseDates">{{ date.repr }}</option>
-                  </select>
-              </form>
-            </div>
-        </header>
+                <select @change="setDate" v-bind:class="{border: this.results.length}">
+                    <option :value="date.valid_at" v-for="date in this.reverseDates">{{ date.repr }}</option>
+                </select>
+            </form>
+        </section>
     </transition>
 </template>
 
@@ -119,11 +109,6 @@ export default {
         this.requested = true;
         lookup();
       },
-      reset() {
-        this.$store.commit("SEARCH_TEXT", this.currentSearch);
-        /* wait before resetting the search results, selection is not possible otherwise */
-        debounce(function() { this.results = [];}, 100)();
-      },
       select(item, e) {
         this.$http.get(`${this.$store.getters.resource.url}/${item.code}/${this.currentDate.valid_at}`)
           .then((res) => {
@@ -151,68 +136,73 @@ export default {
 };
 </script>
 
-<style>
-    header {
-      align-items: baseline;
-      border-bottom: 2px solid #1F3C6F;
-      flex-wrap: wrap;
-      display: flex;
-      position: relative;
-      width: 100%;
+<style scoped>
+    section {
+        padding-top: 1.5rem;
+        width: 100%;
     }
 
-      header h1,
-      header div {
-        flex-grow: 1;
-      }
-
-      header h1,
-      input,
-      select,
-      option {
-        color: #1F3C6F;
-        font-size: 2.6rem;
-        font-weight: 300;
-      }
-
-      header h1 {
-          color: #1F3C6F;
-          font-size: 2.6rem;
-          font-weight: 300;
-          text-transform: uppercase;
-          width: auto;
-      }
-
-      input {
-        padding-bottom: 2px;
-        padding-top: 2px;
-      }
-
-        header .search-date-box form:before {
-            content: "stav k";
-        }
-
-    ul.search-name-autocomplete {
-      border-bottom: 1px solid #1F3C6F;
-      border-top: 1px solid #1F3C6F;
-      list-style: none;
-      padding-left: 0px;
+    form {
+        align-items: baseline;
+        border-bottom: 1px solid #1F3C6F;
+        display: flex;
     }
 
-      ul.search-name-autocomplete li {
-        cursor: pointer;
-        padding-bottom: 8px;
-        padding-top: 8px;
-      }
+    div {
+        flex-grow: 3;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 15px;
+        margin-right: 15px;
+        position: relative;
+    }
+
+    input, select {
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
+
+    input {
+        padding-bottom: 1px;
+    }
 
     select {
-    background: white;
-    border: none;
-    margin-top: -2px !important;
-    padding-left: 1rem;
+        flex-grow: 1;
     }
 
-    .search-name-box .showbox {
+    select.border {
+        border-bottom: 1px solid #1F3C6F;
+    }
+
+    ul {
+        max-height: 20rem;
+        overflow: auto;
+    }
+
+    ul, p {
+        border-top: 1px solid #1F3C6F;
+        flex-basis: 100%;
+        margin: 0;
+        padding: 0;
+        padding-left: .4rem;
+    }
+
+    li, p {
+        padding-bottom: .4rem;
+        padding-top: .4rem;
+    }
+
+    ul li {
+        border-bottom: 1px solid #efefef;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    /* loader */
+    .showbox {
         top: 40px;
+        margin-right: auto;
+        margin-left: auto;
+        width: 60px;
     }
 </style>
