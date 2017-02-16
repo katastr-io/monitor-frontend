@@ -73,6 +73,9 @@ export default {
       autocomplete(e) {
         let self = this;
         let value = e.target.value;
+	let query = Number.isInteger(value)
+	   ? value
+           : value.charAt(0).toUpperCase() + value.slice(1);
 
         this.$store.commit("SEARCH_TEXT", value);
 
@@ -94,7 +97,7 @@ export default {
         const lookup = debounce(
             function() {
                 self.$http.post(`${self.$store.getters.resource.url}/lookup`, {
-                  query: value,
+                  query: query,
                   valid_at: self.currentDate.valid_at
                 }).then((res) => {
                     self.results = res.data;
